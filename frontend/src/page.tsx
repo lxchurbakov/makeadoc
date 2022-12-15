@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { Text, Container } from '/src/components/atoms';
+import { Base, Text, Container } from '/src/components/atoms';
 import { colors } from '/src/libs/theme';
 
 import TemplatesList from '/src/containers/templates-list';
+import DocumentsList from '/src/containers/documents-list';
 
 export default () => {
     return (
@@ -13,7 +14,13 @@ export default () => {
                 Create any document you want using ejs templates.
             </Text>
 
-            <TemplatesList />
+            <Base mb="48px">
+                <TemplatesList />
+            </Base>
+
+            <Base mb="48px">
+                <DocumentsList />
+            </Base>
         </Container>
     );
 };

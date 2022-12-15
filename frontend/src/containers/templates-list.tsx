@@ -3,6 +3,7 @@ import React from 'react';
 import { colors } from '/src/libs/theme';
 import { Loading, Text, Flex, Clickable } from '/src/components/atoms';
 import { Table, Row, Item } from '/src/components/advanced';
+import { api } from '/src/libs/api';
 
 const useQuery = (query, deps) => {
     const [value, setValue] = React.useState(null);
@@ -17,6 +18,20 @@ const useQuery = (query, deps) => {
     return [value, loading, error];
 };
 
+const useForceUpdate = () => {
+    const [_, ss] = React.useState(true);
+    return React.useCallback(() => ss(v => !v), [ss]);
+};
+
+const useTicker = () => {
+    const [data, setData] = React.useState(true);
+    const update = React.useCallback(() => {
+        setData(d => !d);
+    }, [data, setData]);
+
+    return React.useMemo(() => ({ update }), [update]);
+};
+
 export default () => {
     const fileInputRef = React.useRef(null);
 
@@ -24,18 +39,27 @@ export default () => {
         fileInputRef.current?.click?.();
     }, []);
 
+    const templatesTicker = useTicker();
+
     const uploadFile = React.useCallback((e) => {
-        const files = e.target.files;
-        const formData = new FormData();
-
-        formData.append('file', files[0]);
-        
-        fetch('http://localhost:3000/templates', { method: 'POST', body: formData, }).then(res => res.json()).then(console.log)
+        api.templates.upload(e.target.files[0]).then(() => {
+            // TODO notifications
+            templatesTicker.update();
+        }).catch(() => {
+            // TODO notifications
+        });
     }, []);
 
-    const [templates, loading] = useQuery(() => {
-        return fetch('http://localhost:3000/templates').then((res) => res.json());
-    }, []);
+    const [templates, loading] = useQuery(() => api.templates.all(), [templatesTicker]);
+
+    const deleteTemplate = (id: string) => {
+        api.templates.remove(id).then(() => {
+            // TODO notifications
+            templatesTicker.update();
+        }).catch(() => {
+            // TODO notifications
+        });
+    };
 
     return (
         <>
@@ -50,7 +74,7 @@ export default () => {
                             <Row key={template._id}>
                                 <Item w="100%">
                                     <Text w="100%" align="left" size={18} weight={800} color={colors.blue}>
-                                        {template.meta?.name ? template.meta.name : `Template #${template._id.toString().slice(-4)}`}
+                                        {template.meta?.name ? template.meta.name : `Template #${template._id.slice(-4)}`}
                                     </Text>
                                 </Item>
 
@@ -60,6 +84,12 @@ export default () => {
 
                                 <Item w="100%">
                                     <Text w="100%" align="left" size={18} weight={300} color={colors.text}>{template.status}</Text>
+                                </Item>
+
+                                <Item w="50%">
+                                    <Clickable w="100%" color="none" onClick={() => deleteTemplate(template._id)}>
+                                        <Text w="100%" align="left" size={18} weight={800} color={colors.yellow}>delete</Text>
+                                    </Clickable>
                                 </Item>
                             </Row>
                         ))}
@@ -82,7 +112,6 @@ export default () => {
                     <Text size={18} color={colors.yellow} weight={700}>extend existing one</Text>
                 </Clickable>
             </Flex>
-{/*  */}
         </>
     );
 };
