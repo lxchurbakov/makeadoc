@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 type PropsOf<T> = T extends React.FC<infer P> ? P : never;
 
@@ -112,3 +112,39 @@ export const  Disabled = styled(Base)`
     opacity: .5;
     pointer-events: none;
 `;
+
+export const Loader = (props) => (
+    <Text size={18} weight={800} color="#333" {...props}>Loading...</Text>
+);
+
+const LoadingWrap = styled(Base)`
+    position: relative;
+`;
+
+const LoaderWrap = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+
+    background: rgba(255,255,255,.5);
+`;
+
+export const Loading = ({ loading, children, ...props }) => {
+    return (
+        <LoadingWrap {...props}>
+            {children}
+
+            {loading && (
+                <LoaderWrap>
+                    <Loader />
+                </LoaderWrap>
+            )}
+        </LoadingWrap>
+    );
+};
