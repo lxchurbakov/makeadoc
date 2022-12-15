@@ -5,32 +5,7 @@ import { Loading, Text, Flex, Clickable } from '/src/components/atoms';
 import { Table, Row, Item } from '/src/components/advanced';
 import { api } from '/src/libs/api';
 
-const useQuery = (query, deps) => {
-    const [value, setValue] = React.useState(null);
-    const [loading, setLoading] = React.useState(false);
-    const [error, setError] = React.useState(null);
-
-    React.useEffect(() => {
-        setLoading(true);
-        query().then(setValue).catch(setError).then(() => setLoading(false));
-    }, deps);
-
-    return [value, loading, error];
-};
-
-const useForceUpdate = () => {
-    const [_, ss] = React.useState(true);
-    return React.useCallback(() => ss(v => !v), [ss]);
-};
-
-const useTicker = () => {
-    const [data, setData] = React.useState(true);
-    const update = React.useCallback(() => {
-        setData(d => !d);
-    }, [data, setData]);
-
-    return React.useMemo(() => ({ update }), [update]);
-};
+import { useTicker, useQuery } from '/src/libs/hooks';
 
 export default () => {
     const fileInputRef = React.useRef(null);
