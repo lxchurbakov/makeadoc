@@ -71,3 +71,13 @@ templates.post('/', upload.single('file'), route(async (req, res) => {
 templates.get('/', route(async (req, res) => {
     return Template.find({}).toArray();
 }));
+
+templates.delete('/:id', route(async (req, res) => {
+    const { deletedCount } = await Template.deleteOne({ _id: ObjectId(req.params.id) })
+
+    if (deletedCount === 0) {
+        throw new HttpError(404, 'not_found');
+    }
+
+    return null;
+}));
