@@ -7,6 +7,7 @@ const database = client.db('makeadoc');
 
 export { ObjectId };
 export const Template = database.collection('templates');
+export const Document = database.collection('documents');
 
 client.connect().catch((error) => {
     console.error(error);

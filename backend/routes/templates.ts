@@ -10,11 +10,7 @@ const { ObjectId, Template } = require('../libs/mongo');
 
 const upload = multer({ dest: 'uploads/' });
 
-export const templates = express.Router({ mergeParams: true });
-
-const unpackTemplate = (zip: any, name: string) => {
-
-};
+const templates = express.Router({ mergeParams: true });
 
 const readFile = (path: string) => new Promise((resolve, reject) => {
     fs.readFile(path, (err, data) => {
@@ -26,7 +22,7 @@ const readFile = (path: string) => new Promise((resolve, reject) => {
     });
 });
 
-templates.post('/', upload.single('file'), route(async (req, res) => {
+templates.post('/', upload.single('file'), route(async (req, _res) => {
     const rawTemplateZip = req.file;
 
     if (!rawTemplateZip) {
@@ -81,3 +77,5 @@ templates.delete('/:id', route(async (req, res) => {
 
     return null;
 }));
+
+export { templates };

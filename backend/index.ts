@@ -1,7 +1,8 @@
 const fs = require('fs');
 const express = require('express');
 
-const { templates } = require('./routes/templates');
+const {templates} = require('./routes/templates');
+const { documents } = require('./routes/documents');
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(express.json());
 // Routes go here
 
 app.use('/templates', templates);
+app.use('/documents', documents);
 
 // Error handling
 
