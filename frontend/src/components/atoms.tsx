@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-type PropsOf<T> = T extends React.FC<infer P> ? P : never;
+import { PropsOf } from '/src/libs/utils';
 
 export type BaseProps = {
     p?: string;
