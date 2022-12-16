@@ -1,5 +1,5 @@
 const express = require('express');
-const { route } = require('../libs/utils');
+const { route, HttpError } = require('../libs/utils');
 const path = require('path');
 const { ObjectId, Document } = require('../libs/mongo');
 
@@ -46,5 +46,15 @@ documents.get('/:id/pdf', async (req, res) => {
 
     // return insertedId;
 });
+
+documents.delete('/:id', route(async (req, res) => {
+    const { deletedCount } = await Document.deleteOne({ _id: ObjectId(req.params.id) })
+
+    if (deletedCount === 0) {
+        throw new HttpError(404, 'not_found');
+    }
+    
+    return null;
+}));
 
 export { documents };

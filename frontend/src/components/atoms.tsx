@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 
 import { PropsOf } from '/src/libs/utils';
+import { colors } from '/src/libs/theme';
 
 export type BaseProps = {
     p?: string;
@@ -59,7 +60,7 @@ export const Flex = styled(Base)<{
 `;
 
 export const Text = styled(Base)<{ size: number, weight: number, color: string }>`
-    font-family: Inter;
+    font-family: Nunito;
     font-size: ${props => props.size}px;
     font-weight: ${props => props.weight};
     color: ${props => props.color};
@@ -108,9 +109,11 @@ export const Container = ({ children, ...props }: { children: any } & PropsOf<ty
     )
 };
 
-export const  Disabled = styled(Base)`
-    opacity: .5;
-    pointer-events: none;
+export const  Disabled = styled(Base)<{ disabled: boolean }>`
+    ${props => props.disabled && css`
+        opacity: .5;
+        pointer-events: none;
+    `};
 `;
 
 export const Loader = (props) => (
@@ -148,3 +151,11 @@ export const Loading = ({ loading, children, ...props }) => {
         </LoadingWrap>
     );
 };
+
+export const Code = styled.pre`
+    background: ${colors.blueLight};
+    font-family: Monospace;
+    font-size: 16px;
+    padding: 12px 16px;
+    font-weight: 400;
+`;

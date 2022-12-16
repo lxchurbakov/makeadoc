@@ -1,7 +1,5 @@
 const API_HOST = 'http://localhost:3000';
 
-// , headers: { 'Content-Type': 'application/json' }
-
 const submit = (url: string, body) => fetch(`${API_HOST}${url}`, { method: 'POST', body });
 const post = (url: string, body) => fetch(`${API_HOST}${url}`, { method: 'POST', body: JSON.stringify(body), headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } });
 const get = (url: string) => fetch(`${API_HOST}${url}`);
@@ -22,15 +20,6 @@ export const api = {
         remove: (id: string) => {
             return remove(`/templates/${id}`).then((r) => r.json());
         },
-        // pdf: (id: string, meta: any) => {
-        //     return post(`/documents/${id}/pdf`, meta).then((r) => r.blob()).then((data) => {
-        //         console.log(data)
-        //         var a = document.createElement("a");
-        //         a.href = window.URL.createObjectURL(data);
-        //         a.download = "FILENAME";
-        //         a.click();
-        //     });
-        // },
     },
     documents: {
         create: (templateId, meta) => post('/documents', { templateId, meta }).then((r) => r.json()),
@@ -38,8 +27,11 @@ export const api = {
         pdf: (id: string) => get(`/documents/${id}/pdf`).then((r) => r.blob()).then((data) => {
             var a = document.createElement("a");
             a.href = window.URL.createObjectURL(data);
-            a.download = "FILENAME";
+            a.download = `document-${id}`;
             a.click();
         }),
+        remove: (id: string) => {
+            return remove(`/documents/${id}`).then((r) => r.json());
+        },
     },
 };

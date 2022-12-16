@@ -22,7 +22,7 @@ const InputWrap = styled(Flex)<{ cursor: CursorOption }>`
 const InputCore = styled.input<{ hasPrefix: boolean, cursor: CursorOption }>`
     background: none;
     border: none;
-    font-family: Inter;
+    font-family: Nunito;
     font-size: 16px;
     font-weight: 400;
     width: 100%;
@@ -146,10 +146,10 @@ const CodeInputCore = styled.textarea`
     }
 `;
 
-export const CodeInput = ({ value, onChange, ...props }: { value: string, onChange: (v: string) => void } & BaseProps) => {
+export const CodeInput = ({ placeholder, value, onChange, ...props }: { placeholder?: string, value: string, onChange: (v: string) => void } & BaseProps) => {
     return (
         <Base {...props}>
-            <CodeInputCore value={value} onChange={(e) => onChange(e.target.value)} />
+            <CodeInputCore placeholder={placeholder} value={value} onChange={(e) => onChange(e.target.value)} />
         </Base>
     );
 };

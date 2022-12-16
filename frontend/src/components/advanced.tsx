@@ -11,7 +11,7 @@ export const Row = styled(Flex).attrs({
     justify: 'flex-start',
     w: '100%'
 })`
-    &:nth-child(2n) {
+    &:nth-child(2n+1) {
         background: #E4EAF5;
     }
 `;
