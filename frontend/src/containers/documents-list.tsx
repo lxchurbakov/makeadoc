@@ -23,7 +23,7 @@ export default () => {
     const options = React.useMemo(() => {
         return (templates || []).map((template) => ({
             value: template._id,
-            label: template.meta?.name ? template.meta.name : `Template #${template._id.slice(-4)}`
+            label: template.name,
         }));
     }, [templates]);
 

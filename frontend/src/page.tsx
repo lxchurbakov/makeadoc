@@ -9,8 +9,8 @@ import DocumentsList from '/src/containers/documents-list';
 export default () => {
     return (
         <Container>
-            <Text size={48} color={colors.blue} weight={700}>makeadoc</Text>
-            <Text mb="32px" size={18} color={colors.text} weight={300}>
+            <Text size={48} color={colors.blue} weight={800}>makeadoc</Text>
+            <Text mb="32px" size={18} color={colors.text} weight={400}>
                 Create any document you want using ejs templates.
             </Text>
 

@@ -1,14 +1,16 @@
 import React from 'react';
 
 import { colors } from '/src/libs/theme';
-import { Loading, Text, Flex, Clickable } from '/src/components/atoms';
+import { Disabled, Loading, Text, Flex, Clickable } from '/src/components/atoms';
 import { Table, Row, Item } from '/src/components/advanced';
 import { api } from '/src/libs/api';
+import { StringInput } from '/src/components/inputs';
 
 import { useTicker, useQuery } from '/src/libs/hooks';
 import { Delete } from '@styled-icons/fluentui-system-filled/Delete';
 
 export default () => {
+    const [name, setName] = React.useState('');
     const fileInputRef = React.useRef(null);
 
     const startUpload = React.useCallback(() => {
@@ -18,13 +20,13 @@ export default () => {
     const templatesTicker = useTicker();
 
     const uploadFile = React.useCallback((e) => {
-        api.templates.upload(e.target.files[0]).then(() => {
+        api.templates.upload(e.target.files[0], name).then(() => {
             // TODO notifications
             templatesTicker.update();
         }).catch(() => {
             // TODO notifications
         });
-    }, []);
+    }, [name]);
 
     const [templates, loading] = useQuery(() => api.templates.all(), [templatesTicker]);
 
@@ -50,7 +52,7 @@ export default () => {
                             <Row key={template._id}>
                                 <Item w="100%">
                                     <Text w="100%" align="left" size={18} weight={800} color={colors.blue}>
-                                        {template.meta?.name ? template.meta.name : `Template #${template._id.slice(-4)}`}
+                                        {template.name}
                                     </Text>
                                 </Item>
 
@@ -80,9 +82,13 @@ export default () => {
             <input ref={fileInputRef} type="file" style={{ display: 'none' }} onChange={uploadFile} />
 
             <Flex gap={8} justify="flex-start">
-                <Clickable color={colors.yellow} p="8px 16px" onClick={startUpload}>
-                    <Text size={18} color={colors.white} weight={800}>Upload one</Text>
-                </Clickable>
+                <StringInput value={name} onChange={setName} placeholder="Template name" />
+                
+                <Disabled disabled={name === ''}>
+                    <Clickable color={colors.yellow} p="8px 16px" onClick={startUpload}>
+                        <Text size={18} color={colors.white} weight={800}>Upload New</Text>
+                    </Clickable>
+                </Disabled>
 
                 <Text size={18} color={colors.text} weight={400}>or</Text>
 

@@ -1,4 +1,4 @@
-const API_HOST = 'http://localhost:3000';
+const API_HOST = String(process.env.API_HOST);
 
 const submit = (url: string, body) => fetch(`${API_HOST}${url}`, { method: 'POST', body });
 const post = (url: string, body) => fetch(`${API_HOST}${url}`, { method: 'POST', body: JSON.stringify(body), headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } });
@@ -7,10 +7,11 @@ const remove = (url: string) => fetch(`${API_HOST}${url}`, { method: 'DELETE' })
 
 export const api = {
     templates: {
-        upload: (file: File) => {
+        upload: (file: File, name: string) => {
             const formData = new FormData();
 
             formData.append('file', file);
+            formData.append('name', name);
 
             return submit('/templates', formData).then((r) => r.json());
         },

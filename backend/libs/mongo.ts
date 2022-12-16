@@ -1,6 +1,6 @@
 const { MongoClient, ObjectId } = require('mongodb');
 
-const URI = 'mongodb://root:example@localhost:27017/?maxPoolSize=20&w=majority';
+const URI = String(process.env.MONGO_URI);
 
 const client = new MongoClient(URI);
 const database = client.db('makeadoc');

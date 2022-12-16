@@ -24,15 +24,12 @@ const readFile = (path: string) => new Promise((resolve, reject) => {
 
 templates.post('/', upload.single('file'), route(async (req, _res) => {
     const rawTemplateZip = req.file;
+    const name = req.body.name;
 
-    if (!rawTemplateZip) {
-        throw new HttpError(400, 'template_not_uploaded');
-    }
+    if (!rawTemplateZip) { throw new HttpError(400, 'template_not_uploaded'); }
+    if (!name) { throw new HttpError(400, 'name_not_defined'); }
 
-    const { insertedId } = await Template.insertOne({
-        type: 'genuine',
-        status: 'parsing',
-    });
+    const { insertedId } = await Template.insertOne({ type: 'genuine', status: 'parsing', name });
 
     try {
         await decompress(rawTemplateZip.path, `templates/${insertedId}`);
@@ -44,18 +41,13 @@ templates.post('/', upload.single('file'), route(async (req, _res) => {
         await Template.updateOne({
             _id: ObjectId(insertedId),
         }, {
-            $set: {
-                status: 'good',
-                meta,
-            }
+            $set: { status: 'good', meta }
         });
     } catch (e) {
         await Template.updateOne({
             _id: ObjectId(insertedId),
         }, {
-            $set: {
-                status: 'bad',
-            }
+            $set: { status: 'bad', error: e.toString() }
         });
 
         throw new HttpError(400, `template_parsing_failed`);
