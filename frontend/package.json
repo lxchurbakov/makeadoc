@@ -1,5 +1,6 @@
 {
     "scripts": {
+        "build": "npx parcel build --public-url ./ src/index.html",
         "dev": "npx parcel serve src/index.html"
     },
     "dependencies": {

@@ -1,5 +1,5 @@
 import React from 'react';
-import YAML from 'yaml';
+// import YAML from 'yaml';
 
 import { Code, Disabled, Base, Text, Flex, Clickable } from '/src/components/atoms';
 import { OptionsInput, CodeInput } from '/src/components/inputs';
@@ -30,7 +30,8 @@ export default () => {
     const [documents] = useQuery(() => api.documents.all(), [ticker]);
 
     const addDocument = () => {
-        const meta = YAML.parse(data);
+        // const meta = YAML.parse(data);
+        const meta = {};
         const templateId = value;
 
         api.documents.create(templateId, meta).then(() => {
@@ -50,7 +51,8 @@ export default () => {
 
     const meta = React.useMemo(() => {
         const template = templates?.find((t) => t._id === value);
-        return YAML.stringify(template?.meta || {});
+        // return YAML.stringify(template?.meta || {});
+        return '';
     }, [templates, value]);
 
     return (
