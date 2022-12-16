@@ -127,7 +127,8 @@ const CodeInputCore = styled.textarea`
     background: ${colors.blueLight};
 
     font-family: Monospace;
-    font-size: 16px;padding: 12px 16px;
+    font-size: 16px;
+    padding: 12px 16px;
     font-weight: 400;
 
     cursor: ${props => props.cursor};
