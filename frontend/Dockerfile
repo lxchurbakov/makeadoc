@@ -7,6 +7,7 @@ ENV API_HOST=$API_HOST
 WORKDIR /app
 
 COPY src ./src
+COPY patches ./patches
 COPY tsconfig.json .
 COPY package.json .
 COPY package-lock.json .

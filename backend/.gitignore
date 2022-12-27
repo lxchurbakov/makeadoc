@@ -3,3 +3,5 @@ uploads
 templates
 .env
 .env.deploy
+.env.deploy.mongo
+dist

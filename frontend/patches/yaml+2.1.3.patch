@@ -1,0 +1,14 @@
+diff --git a/node_modules/yaml/browser/index.js b/node_modules/yaml/browser/index.js
+index 5f73271..e97e013 100644
+--- a/node_modules/yaml/browser/index.js
++++ b/node_modules/yaml/browser/index.js
+@@ -1,5 +1,6 @@
+ // `export * as default from ...` fails on Webpack v4
+ // https://github.com/eemeli/yaml/issues/228
+-import * as YAML from './dist/index.js'
+-export default YAML
+-export * from './dist/index.js'
++// import * as YAML from './dist/index.js'
++// export default YAML
++// export * from './dist/index.js'
++export * as default from './dist/index.js';

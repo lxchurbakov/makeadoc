@@ -35,6 +35,8 @@ documents.get('/:id/pdf', async (req, res) => {
     // if !document
 
     const { templateId, meta } = document;
+
+    console.log({ templateId, meta })
     const content = await ejspdf.ejs(path.resolve(__dirname, `../templates/${templateId}`), 8001, meta.fields);
 
     res.set('Content-Type', 'application/pdf');
