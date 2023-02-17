@@ -1,6 +1,9 @@
 # Build the application
 FROM node:alpine
 
+# Install PYTHON for node-gyp to work
+RUN apk add --update python3 make g++ && rm -rf /var/cache/apk/*
+
 ARG API_HOST
 ENV API_HOST=$API_HOST
 
@@ -12,8 +15,7 @@ COPY tsconfig.json .
 COPY package.json .
 COPY package-lock.json .
 
-# Install PYTHON for node-gyp to work
-RUN apk add --update python3 make g++ && rm -rf /var/cache/apk/*
+
 
 RUN npm ci && npm run build
 

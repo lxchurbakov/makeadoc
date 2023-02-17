@@ -10,6 +10,6 @@ export const Template = database.collection('templates');
 export const Document = database.collection('documents');
 
 client.connect().catch((error) => {
-    console.error(error);
-    process.exit(1);
+  console.error(error);
+  process.exit(1);
 });

@@ -1,11 +1,17 @@
 # Build the application
 FROM node:alpine
 
+ENV PUPPETEER_SKIP_DOWNLOAD=true
+
+# Install PYTHON for node-gyp to work
+RUN apk add --update python3 make g++ && rm -rf /var/cache/apk/*
+
 ARG MONGO_URI
 ENV MONGO_URI=$MONGO_URI
 
 ARG PORT
 ENV PORT=$PORT
+
 
 WORKDIR /app
 
@@ -16,8 +22,6 @@ COPY tsconfig.json .
 COPY package.json .
 COPY package-lock.json .
 
-# Install PYTHON for node-gyp to work
-RUN apk add --update python3 make g++ && rm -rf /var/cache/apk/*
 
 RUN npm ci && npm run build
 

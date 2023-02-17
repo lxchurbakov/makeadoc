@@ -7,14 +7,19 @@ const documents = express.Router({ mergeParams: true });
 
 const ejspdf = require('@swensson/ejspdf');
 
-documents.post('/', route(async (req, res) => {
+documents.post(
+  '/',
+  route(async (req, res) => {
     const { templateId, meta } = req.body;
     const { insertedId } = await Document.insertOne({ templateId, meta });
 
     return insertedId;
-}));
+  })
+);
 
-documents.get('/', route(async (req, res) => {
+documents.get(
+  '/',
+  route(async (req, res) => {
     return Document.find({}).toArray();
     // const skip = Number(req.query.skip);
     // const limit = Number(req.query.limit);
@@ -24,39 +29,45 @@ documents.get('/', route(async (req, res) => {
     // }
 
     // return Knowledge.find({}).skip(skip).limit(limit).toArray();
-}));
+  })
+);
 
 documents.get('/:id/pdf', async (req, res) => {
-    const id = req.params.id;
-    const document = await Document.findOne({ _id: ObjectId(id) });
+  const id = req.params.id;
+  const document = await Document.findOne({ _id: ObjectId(id) });
 
+  // if !document
 
+  const { templateId, meta } = document;
 
-    // if !document
+  console.log({ templateId, meta });
+  const content = await ejspdf.ejs(
+    path.resolve(__dirname, `../templates/${templateId}`),
+    8001,
+    meta.fields
+  );
 
-    const { templateId, meta } = document;
+  res.set('Content-Type', 'application/pdf');
+  res.write(content);
+  res.end();
 
-    console.log({ templateId, meta })
-    const content = await ejspdf.ejs(path.resolve(__dirname, `../templates/${templateId}`), 8001, meta.fields);
+  // const { templateId, meta } = req.body;
+  // const { insertedId } = await Document.insertOne({ templateId, meta });
 
-    res.set('Content-Type', 'application/pdf');
-    res.write(content);
-    res.end();
-
-    // const { templateId, meta } = req.body;
-    // const { insertedId } = await Document.insertOne({ templateId, meta });
-
-    // return insertedId;
+  // return insertedId;
 });
 
-documents.delete('/:id', route(async (req, res) => {
-    const { deletedCount } = await Document.deleteOne({ _id: ObjectId(req.params.id) })
+documents.delete(
+  '/:id',
+  route(async (req, res) => {
+    const { deletedCount } = await Document.deleteOne({ _id: ObjectId(req.params.id) });
 
     if (deletedCount === 0) {
-        throw new HttpError(404, 'not_found');
+      throw new HttpError(404, 'not_found');
     }
-    
+
     return null;
-}));
+  })
+);
 
 export { documents };
