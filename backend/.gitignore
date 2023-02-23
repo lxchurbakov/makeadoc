@@ -1,8 +1,0 @@
-node_modules
-dist
-uploads
-templates
-.env
-.env.deploy
-.env.deploy.mongo
-.DS_Store

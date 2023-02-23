@@ -1,6 +1,19 @@
 .DS_Store
-.env
+.parcel-cache
 
+.env
+.env.deploy
+.env.deploy.mongo
+.deploy
+
+node_modules
+dist
+uploads
+templates
 data
 generate-secrets.js
-.deploy
+
+
+
+
+
